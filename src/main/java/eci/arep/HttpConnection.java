@@ -7,7 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpConnection {
-    private static final String GET_URL = "http://localhost:45000/";
+    private static final String GET_URL = "http://localhost:45000/compreflex?";
 
     public static String consult(String path) throws IOException {
 

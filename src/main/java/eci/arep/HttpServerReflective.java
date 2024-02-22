@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 public class HttpServerReflective {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
         ServerSocket serverSocket = null;
         while (true) {
             try {
@@ -31,13 +31,25 @@ public class HttpServerReflective {
             String inputLine, outputLine = "";
 
 
+            boolean firstLine = true;
+            String path = "";
+
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
+                if (firstLine){
+                    path = inputLine.split(" ")[1].toLowerCase();
+                    firstLine = false;
+                }
                 if (!in.ready()) {
                     break;
                 }
             }
-            outputLine = response();
+            if (path.startsWith("/compreflex")) {
+                System.out.println("----------------> " + path);
+                outputLine = function(path);
+            } else {
+                outputLine = response();
+            }
 
 
             out.println(outputLine);
@@ -46,6 +58,21 @@ public class HttpServerReflective {
             clientSocket.close();
             serverSocket.close();
         }
+    }
+
+    public static String function(String uri) throws URISyntaxException, ClassNotFoundException {
+        URI url = new URI(uri);
+        String query = url.getQuery();
+        if (query.startsWith("class")){
+            System.out.println("----------------------------------------"+ query.substring(7, query.length()-2));
+            try {
+                Class<?> method = Class.forName(query.substring(7, query.length() - 2));
+                System.out.println("----------------------------------------"+ method.getMethods());
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        }
+        return response();
     }
 
     public static String response(){

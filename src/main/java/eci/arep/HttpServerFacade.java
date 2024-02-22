@@ -4,7 +4,7 @@ import java.net.*;
 import java.io.*;
 
 public class HttpServerFacade {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         ServerSocket serverSocket = null;
         while (true) {
             try {
@@ -47,7 +47,8 @@ public class HttpServerFacade {
             if (path.startsWith("/cliente")) {
                 outputLine = response();
             } else if (path.startsWith("/consulta")) {
-                outputLine = HttpConnection.consult(path);
+                URI uri = new URI(path);
+                outputLine = HttpConnection.consult(uri.getQuery());
             }
 
             out.println(outputLine);
@@ -72,8 +73,8 @@ public class HttpServerFacade {
                 "    <body>\n" +
                 "        <h1>Form with GET</h1>\n" +
                 "        <form action=\"/hello\">\n" +
-                "            <label for=\"name\">Name:</label><br>\n" +
-                "            <input type=\"text\" id=\"name\" name=\"name\" value=\"John\"><br><br>\n" +
+                "            <label for=\"name\">Indique el servicio que desea utilizar:</label><br>\n" +
+                "            <input type=\"text\" id=\"name\" name=\"name\" value=\"Class([eci.arep.HttpConnection])\"><br><br>\n" +
                 "            <input type=\"button\" value=\"Submit\" onclick=\"loadGetMsg()\">\n" +
                 "        </form> \n" +
                 "        <div id=\"getrespmsg\"></div>\n" +
@@ -86,7 +87,7 @@ public class HttpServerFacade {
                 "                    document.getElementById(\"getrespmsg\").innerHTML =\n" +
                 "                    this.responseText;\n" +
                 "                }\n" +
-                "                xhttp.open(\"GET\", \"http://localhost:45000/\"+nameVar);\n" +
+                "                xhttp.open(\"GET\", \"http://localhost:36000/consulta?\"+nameVar);\n" +
                 "                xhttp.send();\n" +
                 "            }\n" +
                 "        </script>\n" +
