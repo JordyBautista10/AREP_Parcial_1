@@ -69,8 +69,17 @@ public class HttpServerReflective {
         if (query.startsWith("Class")){
             System.out.println("----------------------------------------"+ query.substring(7, query.length()-2));
             try {
-                Class<?> method = Class.forName(query.substring(7, query.length() - 2));
-                resp += Arrays.toString(method.getMethods());
+                Class<?> clase = Class.forName(query.substring(7, query.length() - 2));
+                resp += Arrays.toString(clase.getMethods());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (query.startsWith("invoke")){
+            System.out.println("----------------------------------------"+ query.substring(8, query.length()-2));
+            try {
+                String contenido = query.substring(8, query.length()-2);
+                Class<?> clase = Class.forName(contenido.split(",")[0]);
+                //resp += Arrays.toString(clase.getMethod(contenido.split(",")[1], String));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
