@@ -37,7 +37,7 @@ public class HttpServerFacade {
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
                 if (firstLine){
-                    path = inputLine.split(" ")[1].toLowerCase();
+                    path = inputLine.split(" ")[1];
                     firstLine = false;
                 }
                 if (!in.ready()) {
@@ -74,7 +74,7 @@ public class HttpServerFacade {
                 "        <h1>Form with GET</h1>\n" +
                 "        <form action=\"/hello\">\n" +
                 "            <label for=\"name\">Indique el servicio que desea utilizar:</label><br>\n" +
-                "            <input type=\"text\" id=\"name\" name=\"name\" value=\"Class([eci.arep.HttpConnection])\"><br><br>\n" +
+                "            <input type=\"text\" id=\"name\" name=\"name\" value=\"Class([java.lang.Thread])\"><br><br>\n" +
                 "            <input type=\"button\" value=\"Submit\" onclick=\"loadGetMsg()\">\n" +
                 "        </form> \n" +
                 "        <div id=\"getrespmsg\"></div>\n" +

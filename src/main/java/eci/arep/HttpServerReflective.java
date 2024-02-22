@@ -1,7 +1,9 @@
 package eci.arep;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.*;
+import java.util.Arrays;
 
 public class HttpServerReflective {
     public static void main(String[] args) throws IOException, URISyntaxException, ClassNotFoundException {
@@ -37,7 +39,7 @@ public class HttpServerReflective {
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
                 if (firstLine){
-                    path = inputLine.split(" ")[1].toLowerCase();
+                    path = inputLine.split(" ")[1];
                     firstLine = false;
                 }
                 if (!in.ready()) {
@@ -63,16 +65,17 @@ public class HttpServerReflective {
     public static String function(String uri) throws URISyntaxException, ClassNotFoundException {
         URI url = new URI(uri);
         String query = url.getQuery();
-        if (query.startsWith("class")){
+        String resp = response();
+        if (query.startsWith("Class")){
             System.out.println("----------------------------------------"+ query.substring(7, query.length()-2));
             try {
                 Class<?> method = Class.forName(query.substring(7, query.length() - 2));
-                System.out.println("----------------------------------------"+ method.getMethods());
+                resp += Arrays.toString(method.getMethods());
             } catch (Exception e) {
-                System.err.println(e);
+                System.out.println(e.getMessage());
             }
         }
-        return response();
+        return resp;
     }
 
     public static String response(){
