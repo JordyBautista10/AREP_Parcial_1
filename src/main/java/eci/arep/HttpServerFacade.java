@@ -31,14 +31,24 @@ public class HttpServerFacade {
             String inputLine, outputLine = "";
 
 
+            boolean firstLine = true;
+            String path = "";
+
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibí: " + inputLine);
+                if (firstLine){
+                    path = inputLine.split(" ")[1].toLowerCase();
+                    firstLine = false;
+                }
                 if (!in.ready()) {
                     break;
                 }
             }
-            outputLine = response();
-
+            if (path.startsWith("/cliente")) {
+                outputLine = response();
+            } else if (path.startsWith("/consulta")) {
+                outputLine = HttpConnection.consult(path);
+            }
 
             out.println(outputLine);
             out.close();
@@ -76,7 +86,7 @@ public class HttpServerFacade {
                 "                    document.getElementById(\"getrespmsg\").innerHTML =\n" +
                 "                    this.responseText;\n" +
                 "                }\n" +
-                "                xhttp.open(\"GET\", \"/hello?name=\"+nameVar);\n" +
+                "                xhttp.open(\"GET\", \"http://localhost:45000/\"+nameVar);\n" +
                 "                xhttp.send();\n" +
                 "            }\n" +
                 "        </script>\n" +
@@ -102,4 +112,6 @@ public class HttpServerFacade {
                 "    </body>\n" +
                 "</html>";
     }
+
+
 }
